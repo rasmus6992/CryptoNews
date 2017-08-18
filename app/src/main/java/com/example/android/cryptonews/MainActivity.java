@@ -22,6 +22,7 @@ import com.github.jreddit.retrieval.params.SubmissionSort;
 import com.github.jreddit.utils.restclient.HttpRestClient;
 import com.github.jreddit.utils.restclient.RestClient;
 
+import org.eluder.coveralls.maven.plugin.domain.JsonObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +35,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     public ArrayList<JSONObject> coinData;  // holds each coins information
+    private String access_token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +86,13 @@ public class MainActivity extends AppCompatActivity {
                 {
                     @Override
                     public void onResponse(String response) {
-                        // response
-                        Log.d("reddit", response);
+                        try{
+                        JSONObject jsResponse = new JSONObject(response);
+                        access_token = jsResponse.getString("access_token");
+                        Log.d("reddit", access_token);
+                        } catch (Exception e){
+                            Log.d("Error", e.toString());
+                        }
                     }
                 },
                 new Response.ErrorListener()
